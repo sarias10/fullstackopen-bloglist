@@ -1,16 +1,16 @@
 const { test, describe } = require('node:test')
 const assert = require('node:assert')
-const listHelper = require('../utils/list_helper')
 
-describe('dummy', () => {
-    test('dummy returns one', () => {
-        const blogs = []
-    
-        const result = listHelper.dummy(blogs)
-        assert.strictEqual(result, 1)
+const totalLikes = require('../utils/list_helper').totalLikes
+
+describe('total likes', () => {
+    test('list have 0 blogs', () => {
+        const result = totalLikes([])
+
+        assert.strictEqual(result, 0)
     })
-    
-    test('dummy returns one with many blogs', () => {
+
+    test('list have 36 likes in all blogs', () => {
         const blogs = [
             {
               _id: "5a422a851b54a676234d17f7",
@@ -61,8 +61,8 @@ describe('dummy', () => {
               __v: 0
             }  
           ]
-    
-        const result = listHelper.dummy(blogs)
-        assert.strictEqual(result, 1)
+        const result = totalLikes(blogs)
+        assert.strictEqual(result, 36)
     })
+
 })
