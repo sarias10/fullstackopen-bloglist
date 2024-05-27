@@ -67,6 +67,7 @@ describe('favorite blog', () => {
             author: "Edsger W. Dijkstra",
             likes: 12
           }
+        // compara clave y valor y los tipos en los objetos
         assert.deepStrictEqual(result,expected)
     })
 })
