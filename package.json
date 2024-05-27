@@ -7,8 +7,8 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "dev:inspect": "nodemon --inspect index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "node --test"
   },
   "author": "sergio",
   "license": "ISC",
