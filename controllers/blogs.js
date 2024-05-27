@@ -1,3 +1,7 @@
+// Aqui se guardan todas las solicitudes http hacia los objetos blog
+
+// El objeto enrutador es, de hecho, un middleware que se puede utilizar para definir "rutas relacionadas" en un solo lugar
+
 const notesRouter = require('express').Router()
 const Blog = require('../models/blog')
 

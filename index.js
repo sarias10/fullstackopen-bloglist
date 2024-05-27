@@ -1,4 +1,4 @@
-// El archivo index.js solo importa la aplicación real desde el archivo app.js y luego inicia la aplicación
+// Este archivo solo importa la aplicación real desde el archivo app.js y luego inicia la aplicación
 
 const app = require('./app')
 const config = require('./utils/config')

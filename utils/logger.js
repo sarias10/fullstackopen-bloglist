@@ -1,4 +1,4 @@
-// para imprimir mensajes de dos tipos
+// Aqui hay funciones que se utilizan para imprimir mensajes de dos tipos
 
 // para imprimir mensajes de registro normales
 const info = (...params) => {

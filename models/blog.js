@@ -1,3 +1,5 @@
+// Este archivo solo define el esquema de moongoose para los blogs
+
 const mongoose = require('mongoose')
 
 const blogSchema = new mongoose.Schema({
