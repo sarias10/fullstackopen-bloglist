@@ -61,16 +61,16 @@ const totalLikes = (blogs) => {
       me gusta en todas las publicaciones 
       del blog
       */
-      const initialValue = 0;
-      const sumWTotalLikes = blogs.reduce(
+    const initialValue = 0
+    const sumWTotalLikes = blogs.reduce(
         (accumulator, currentValue) =>
-            accumulator + currentValue.likes, 
-            initialValue
-      )
-      return blogs.length === 0 
-       ? 0
-       : sumWTotalLikes
-       
+            accumulator + currentValue.likes,
+        initialValue
+    )
+    return blogs.length === 0
+        ? 0
+        : sumWTotalLikes
+
 }
 
 const favoriteBlog = (blogs) => {
@@ -86,23 +86,22 @@ const favoriteBlog = (blogs) => {
     //el initialValue es {} (objeto vacio), max es el accumulator y blog es el currentValue
     //si los likes del objeto max(accumulator) son mayores al del objeto likes(currentValue)
     //entonces max queda con el mismo objeto, sino, max pasa a ser el currentValue
-    .reduce(
-        (max, blog) => max.likes > blog.likes ? max = max : max = blog, {}
-    )
-    
+        .reduce(
+            (max, blog) => max.likes > blog.likes ? max = max : max = blog, {}
+        )
     return mayor
 }
 
 const mostBlogs = (blogs) => {
-  const uniqueAuthors = _.maxBy(_.map(_.countBy(blogs, 'author'), (val,key) => ({author:key,blogs:val})),'blogs')
+    const uniqueAuthors = _.maxBy(_.map(_.countBy(blogs, 'author'), (val,key) => ({author:key,blogs:val})),'blogs')
 
-  return uniqueAuthors
+    return uniqueAuthors
 }
 
 const mostLikes = (blogs) => {
-  const authors = _.maxBy(_.map(_.groupBy(blogs, 'author'),(val, key)=>({author: key, likes:_.sumBy(val,'likes')})),'likes')
+    const authors = _.maxBy(_.map(_.groupBy(blogs, 'author'),(val, key)=>({author: key, likes:_.sumBy(val,'likes')})),'likes')
 
-  return authors
+    return authors
 }
 
 module.exports ={
