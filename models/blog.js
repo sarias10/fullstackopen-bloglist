@@ -3,11 +3,11 @@
 const mongoose = require('mongoose')
 
 const blogSchema = new mongoose.Schema({
-    title: String,
+    title: { type: String, required: true },
     author: String,
-    url: String,
+    url: { type: String, required: true },
     //if likes don't exist in the request then the schema add likes propertys with value 0
-    likes: { type: Number, default:0 }
+    likes: { type: Number, default: 0 }
 })
 
 blogSchema.set('toJSON', {

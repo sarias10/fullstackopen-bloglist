@@ -57,7 +57,7 @@ describe('testing blog list api', () => {
 
     })
 
-    test('likes is 0 if likes property don\'t exist in the request', async () => {
+    test('likes is 0 if likes missing in the request', async () => {
         //In this test this object never have likes property
         const newBlog = {
             title: 'learning to test api',
@@ -72,6 +72,30 @@ describe('testing blog list api', () => {
 
         const response = post.body
         assert.strictEqual(response.likes,0)
+    })
+
+    test('if title missing then response code is 400', async () => {
+        const newBlog = {
+            author: 'Sergio Arias',
+            url: 'sergio-arias.com',
+            likes: 50000
+        }
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
+    })
+
+    test('if url missing then response code is 400', async () => {
+        const newBlog = {
+            title: 'learning to test api',
+            author: 'Sergio Arias',
+            likes: 50000
+        }
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
     })
 })
 

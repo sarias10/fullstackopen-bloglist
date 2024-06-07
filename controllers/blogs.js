@@ -10,12 +10,15 @@ notesRouter.get('/', async (request,response) => {
     response.json(blogs)
 })
 
-notesRouter.post('/', async (request,response) => {
+notesRouter.post('/', async (request,response, next) => {
     const blog = new Blog(request.body)
-
-    const result = await blog.save()
     // significa que una solicitud se procesó correctamente y devolvió,o creó, un recurso o resources en el proceso
-    response.status(201).json(result)
+    try{
+        const result = await blog.save()
+        response.status(201).json(result)
+    }catch(error){
+        next(error)
+    }
 })
 
 module.exports = notesRouter
