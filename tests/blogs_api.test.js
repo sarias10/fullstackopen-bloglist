@@ -9,7 +9,6 @@ const Blog = require('../models/blog')
 //el objeto superagent se asigna a la variable api y se prueba la api con el
 const api = supertest(app)
 
-
 beforeEach( async () => {
     await Blog.deleteMany({})
     for(let object of helper.initialBlogs){
@@ -27,8 +26,14 @@ describe('testing blog list api', () => {
     })
 
     test('blog list have 6 objects', async () => {
-        let response = await api.get('/api/blogs')
+        const response = await api.get('/api/blogs')
         assert.strictEqual(response.body.length, 6)
+    })
+
+    test('id\'s property is "id"', async () => {
+        const response = await api.get('/api/blogs')
+        const firstObjectAtributes = Object.keys(response.body[0])
+        assert(firstObjectAtributes.includes('id'))
     })
 })
 
