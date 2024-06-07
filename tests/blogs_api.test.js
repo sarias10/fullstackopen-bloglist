@@ -56,6 +56,23 @@ describe('testing blog list api', () => {
         assert(titles.includes('learning to test api'))
 
     })
+
+    test('likes is 0 if likes property don\'t exist in the request', async () => {
+        //In this test this object never have likes property
+        const newBlog = {
+            title: 'learning to test api',
+            author: 'Sergio Arias',
+            url: 'sergio-arias.com'
+        }
+        const post = await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(201)
+            .expect('Content-type', /application\/json/)
+
+        const response = post.body
+        assert.strictEqual(response.likes,0)
+    })
 })
 
 after(async () => {
