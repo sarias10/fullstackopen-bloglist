@@ -35,6 +35,27 @@ describe('testing blog list api', () => {
         const firstObjectAtributes = Object.keys(response.body[0])
         assert(firstObjectAtributes.includes('id'))
     })
+
+    test('creating a new blog', async () => {
+        const newBlog = {
+            title: 'learning to test api',
+            author: 'Sergio Arias',
+            url: 'sergio-arias.com',
+            likes: 50000,
+        }
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(201)
+            .expect('Content-type', /application\/json/)
+        //verifica que la base de datos aumente en uno
+        assert.strictEqual((await helper.blogsInDb()).length, helper.initialBlogs.length+1)
+
+        const titles = (await helper.blogsInDb()).map(blog => blog.title)
+        //verifica que la base de datos contenga el title del nuevo objeto
+        assert(titles.includes('learning to test api'))
+
+    })
 })
 
 after(async () => {
