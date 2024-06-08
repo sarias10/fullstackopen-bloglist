@@ -97,6 +97,24 @@ describe('testing blog list api', () => {
             .send(newBlog)
             .expect(400)
     })
+
+    describe('deletion of a blog', () => {
+        test('blog can be deleted', async () => {
+            const blogsAtStart = await helper.blogsInDb()
+            const oneBlog = blogsAtStart[0]
+            const titleOfOneBlog = oneBlog.title
+            //delete the blog
+            await api
+                .delete(`/api/blogs/${oneBlog.id}`)
+                .expect(204)
+
+            const blogAtEnd = await helper.blogsInDb()
+            assert.strictEqual(blogAtEnd.length, blogsAtStart.length-1)
+
+            const titles = blogAtEnd.map(blog => blog.title)
+            assert(!titles.includes(titleOfOneBlog))
+        })
+    })
 })
 
 after(async () => {
