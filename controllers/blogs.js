@@ -31,4 +31,23 @@ notesRouter.delete('/:id', async (request, response, next) => {
     }
 })
 
+notesRouter.put('/:id', async (request, response, next) => {
+    const blog = {
+        //estos son los unicos datos que se actualizaran en la request
+        likes: request.body.likes
+    }
+    try {
+        const updatedBlog = await Blog
+            //se le pasa el nuevo blog como argumento
+            .findByIdAndUpdate(request.params.id, blog,
+                { new: true,
+                    //para que vuelva a validar los datos ingresados
+                    runValidators: true,
+                    context: 'query' })
+        response.status(200).json(updatedBlog)
+    } catch(error) {
+        next(error)
+    }
+})
+
 module.exports = notesRouter
