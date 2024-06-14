@@ -5,6 +5,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const notesRouter = require('./controllers/blogs')
+const usersRouter = require('./controllers/users')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
@@ -24,7 +25,8 @@ mongoose.connect(mongoUrl)
 app.use(cors())
 app.use(express.json())
 app.use('/api/blogs',notesRouter)
-
+//cuando se haga una solicitud HTTP a la direccion .../api/users, se ejecutara usersRouter
+app.use('/api/users', usersRouter)
 // handler of requests with result to errors
 app.use(middleware.errorHandler)
 
