@@ -30,10 +30,10 @@ describe('testing blog list api users', () => {
                 .expect('Content-type', /application\/json/)
         })
 
-        test('users have 2 objects', async () => {
+        test('users have 4 objects', async () => {
             const response = await api
                 .get('/api/users')
-            assert.strictEqual(response.body.length, 2)
+            assert.strictEqual(response.body.length, 4)
         })
     })
 

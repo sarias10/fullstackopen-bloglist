@@ -1,3 +1,4 @@
+### create user Julio
 POST http://localhost:3003/api/users
 Content-Type: application/json
 
@@ -7,7 +8,7 @@ Content-Type: application/json
     "password": "root"
 }
 
-### kelly
+### Create user Kelly
 
 POST http://localhost:3003/api/users
 Content-Type: application/json
@@ -15,6 +16,28 @@ Content-Type: application/json
 {
     "username": "kelly",
     "name": "kelly",
+    "password": "root"
+}
+
+### Create user Sergio
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "sergio",
+    "name": "sergio",
+    "password": "root"
+}
+
+### Create user Lina
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "Lina",
+    "name": "Lina",
     "password": "root"
 }
 

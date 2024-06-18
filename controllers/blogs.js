@@ -4,18 +4,35 @@
 
 const notesRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 notesRouter.get('/', async (request,response) => {
-    const blogs = await Blog.find({})
+    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
     response.json(blogs)
 })
 
 notesRouter.post('/', async (request,response, next) => {
-    const blog = new Blog(request.body)
-    // significa que una solicitud se procesó correctamente y devolvió,o creó, un recurso o resources en el proceso
+    const body = request.body
+    //busca un usuario random en la base de datos
+    const query = await User.aggregate().sample(1)
+    //guardo su ID
+    const randomUserId = query[0]._id.toString()
+    //lo agrego al body como propiedad
+    body.user = randomUserId
+    //creo un nuevo objeto Blog con el modelo
+    const blog = new Blog(body)
+
     try{
-        const result = await blog.save()
-        response.status(201).json(result)
+        //guardo el blog en la base de datos usando su metodo save()
+        const savedBlog = await blog.save()
+        //encuentra el usuario por su Id
+        const user = await User.findById(randomUserId)
+        //actualizo su lista de blogs con su anterior lista de blogs con el blog guardado
+        user.blogs = user.blogs.concat(savedBlog._id)
+        //guardo la actualizacion del usuario
+        await user.save()
+        // significa que una solicitud se procesó correctamente y devolvió,o creó, un recurso o resources en el proceso
+        response.status(201).json(savedBlog)
     }catch(error){
         next(error)
     }

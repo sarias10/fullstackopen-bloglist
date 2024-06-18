@@ -62,6 +62,16 @@ const initialUsers = [
         username: 'camila',
         password: 'root',
         name: 'camila'
+    },
+    {
+        username: 'leonardo',
+        password: 'root',
+        name: 'leonardo'
+    },
+    {
+        username: 'isabela',
+        password: 'root',
+        name: 'isabela'
     }
 ]
 
