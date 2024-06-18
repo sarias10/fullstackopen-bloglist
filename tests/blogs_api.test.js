@@ -2,8 +2,9 @@ const { test, describe, after, beforeEach } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+//importa la aplicacion "app"
 const app = require('../app')
-//importa la aplicacion "app" y la envuelve en la función supertest, creando el objeto superagent
+//envuelve la aplicación app en la función supertest, creando el objeto superagent
 //el objeto superagent se asigna a la variable api y se prueba la api con el
 const api = supertest(app)
 

@@ -17,3 +17,36 @@ Content-Type: application/json
     "name": "kelly",
     "password": "root"
 }
+
+### user not valid
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "cd",
+    "name": "kelly",
+    "password": "root"
+}
+
+### password not valid
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "camilo",
+    "name": "camilo",
+    "password": "ds"
+}
+
+### password's missing
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "camilo",
+    "name": "camilo",
+    "password": ""
+}

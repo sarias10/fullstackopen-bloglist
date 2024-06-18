@@ -7,26 +7,38 @@ usersRouter.get('/', async (request, response) => {
     response.status(200).json(users)
 })
 
-usersRouter.post('/', async (request, response) => {
+usersRouter.post('/', async (request, response, next) => {
     const { username, name, password } = request.body
 
-    const saltRounds = 10
-    //ciframos la contraseña recibida
-    const passwordHash = await bcrypt.hash(password,saltRounds)
+    try {
+        if(password){
+            if (password.length >= 3){
+                const saltRounds = 10
+                //ciframos la contraseña recibida
+                const passwordHash = await bcrypt.hash(password,saltRounds)
 
-    //creamos un nuevo objeto usuario
-    const user = new User({
-        username,
-        // si hay que ponerla así, porque la propiedad en el modelo se llama password
-        password: passwordHash,
-        name
-    })
+                //creamos un nuevo objeto usuario
+                const user = new User({
+                    username,
+                    // si hay que ponerla así, porque la propiedad en el modelo se llama password
+                    password: passwordHash,
+                    name
+                })
 
-    //utilizamos el metodo save del objeto para guardar el usuario en la base de datos
-    const savedUser = await user.save()
+                //utilizamos el metodo save del objeto para guardar el usuario en la base de datos
+                const savedUser = await user.save()
 
-    //respondemos con el usuario guardado
-    response.status(201).json(savedUser)
+                //respondemos con el usuario guardado
+                response.status(201).json(savedUser)
+            } else {
+                response.status(400).json({ error: 'The password must be at least 3 characters long.' })
+            }
+        } else {
+            response.status(400).json({ error: 'password is missing' })
+        }
+    } catch(error) {
+        next(error)
+    }
 })
 
 //exportamos para poder usarlo en el archivo app.js
