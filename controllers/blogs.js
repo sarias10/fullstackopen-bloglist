@@ -3,8 +3,29 @@
 // El objeto enrutador es, de hecho, un middleware que se puede utilizar para definir "rutas relacionadas" en un solo lugar
 
 const notesRouter = require('express').Router()
+const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+
+const getTokenFrom = request => {
+    //obtiene el encabezado authorization de la solicitud
+    const authorization = request.get('authorization')
+    //si autorizacion existe y empieza con 'Bearer '
+    //entonces reemplaza 'Bearer ' con nada y lo devuelve
+    if (authorization && authorization.startsWith('Bearer ')) {
+        return authorization.replace('Bearer ', '')
+    }
+    //sino cumple el condicional anterior entonces devuelve null
+    return null
+}
+notesRouter.get('/testGetTokenFrom', async (request, response) => {
+    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+    if(!decodedToken.id) {
+        return response.status(401).json({ error: 'token invalid' })
+    }
+    const user = await User.findById(decodedToken.id)
+    console.log(user)
+})
 
 notesRouter.get('/', async (request,response) => {
     const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
@@ -13,25 +34,35 @@ notesRouter.get('/', async (request,response) => {
 
 notesRouter.post('/', async (request,response, next) => {
     const body = request.body
-    //busca un usuario random en la base de datos
-    const query = await User.aggregate().sample(1)
-    //guardo su ID
-    const randomUserId = query[0]._id.toString()
-    //lo agrego al body como propiedad
-    body.user = randomUserId
-    //creo un nuevo objeto Blog con el modelo
-    const blog = new Blog(body)
 
     try{
-        //guardo el blog en la base de datos usando su metodo save()
+        //decodifica el token y devuelve en decodedToken el objeto con atributos username y id
+        const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+        //sino existe el id en el token devuelve error
+        if(!decodedToken.id) {
+            return response.status(401).json({ error: 'token invalid' })
+        }
+        //busca en la base de datos el usuario con el id del token y lo guarda en la variable user
+        const user = await User.findById(decodedToken.id)
+
+        //crea un blog nuevo usando el esquema Blog y asignando a user user el user._id
+        const blog = new Blog ({
+            title: body.title,
+            author: body.author,
+            url: body.url,
+            likes: body.likes,
+            user: user._id
+        })
+
+        //guarda el blog en la base de datos de los blogs
         const savedBlog = await blog.save()
-        //encuentra el usuario por su Id
-        const user = await User.findById(randomUserId)
-        //actualizo su lista de blogs con su anterior lista de blogs con el blog guardado
-        user.blogs = user.blogs.concat(savedBlog._id)
-        //guardo la actualizacion del usuario
+        //actualiza la lista de blogs del usuario concatenando el blog guardado
+        user.blogs = user.blogs.concat(savedBlog)
+        //guarda en la base de datos la actualización
         await user.save()
-        // significa que una solicitud se procesó correctamente y devolvió,o creó, un recurso o resources en el proceso
+
+        //un código 201 significa que una solicitud se procesó correctamente y devolvió,o creó, un recurso o resources en el proceso
+        //responde con el blog guardado
         response.status(201).json(savedBlog)
     }catch(error){
         next(error)
