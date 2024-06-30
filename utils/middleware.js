@@ -1,4 +1,5 @@
 // para consultar los nombres de los errores hay que usar "error.name" no dice la propiedad explicitamente en el objeto porque es una propiedad no enumerable
+const blogsRouter = require('../controllers/blogs')
 
 const errorHandler = (error, request, response, next) => {
     if(error.name==='CastError') {
@@ -13,6 +14,11 @@ const errorHandler = (error, request, response, next) => {
     next(error)
 }
 
+const tokenExtractor = (request, response, next) => {
+    //codigo que extra el token
+}
+
 module.exports = {
-    errorHandler
+    errorHandler,
+    tokenExtractor
 }

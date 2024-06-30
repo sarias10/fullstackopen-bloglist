@@ -3,9 +3,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkxpbmEiLCJpZCI6IjY2NzFkMTljOWViNDhmNTNmOGNmNGU1MiIsImlhdCI6MTcxOTA3MzYxNH0.XOxrLn-xaHmSLUx6X8C9B5sOhCK4bte-M3tnQN9OCns
 
 {
-    "title": "autenticacion 3",
-    "author": "autenticacion 3",
-    "url": "autenticacion 3"
+    "title": "autenticacion 40",
+    "author": "autenticacion 40",
+    "url": "autenticacion 40"
 }
 
 ###

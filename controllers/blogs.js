@@ -2,7 +2,7 @@
 
 // El objeto enrutador es, de hecho, un middleware que se puede utilizar para definir "rutas relacionadas" en un solo lugar
 
-const notesRouter = require('express').Router()
+const blogsRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
@@ -11,14 +11,15 @@ const getTokenFrom = request => {
     //obtiene el encabezado authorization de la solicitud
     const authorization = request.get('authorization')
     //si autorizacion existe y empieza con 'Bearer '
-    //entonces reemplaza 'Bearer ' con nada y lo devuelve
+    //entonces reemplaza 'Bearer ' con nada y devuelve lo demas
     if (authorization && authorization.startsWith('Bearer ')) {
         return authorization.replace('Bearer ', '')
     }
     //sino cumple el condicional anterior entonces devuelve null
     return null
 }
-notesRouter.get('/testGetTokenFrom', async (request, response) => {
+
+blogsRouter.get('/testGetTokenFrom', async (request, response) => {
     const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
     if(!decodedToken.id) {
         return response.status(401).json({ error: 'token invalid' })
@@ -27,12 +28,12 @@ notesRouter.get('/testGetTokenFrom', async (request, response) => {
     console.log(user)
 })
 
-notesRouter.get('/', async (request,response) => {
+blogsRouter.get('/', async (request,response) => {
     const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
     response.json(blogs)
 })
 
-notesRouter.post('/', async (request,response, next) => {
+blogsRouter.post('/', async (request,response, next) => {
     const body = request.body
 
     try{
@@ -69,7 +70,7 @@ notesRouter.post('/', async (request,response, next) => {
     }
 })
 
-notesRouter.delete('/:id', async (request, response, next) => {
+blogsRouter.delete('/:id', async (request, response, next) => {
     try {
         await Blog.findByIdAndDelete(request.params.id)
         //es importante poner .end() para poner en la respuesta sin contenido
@@ -79,7 +80,7 @@ notesRouter.delete('/:id', async (request, response, next) => {
     }
 })
 
-notesRouter.put('/:id', async (request, response, next) => {
+blogsRouter.put('/:id', async (request, response, next) => {
     const blog = {
         //estos son los unicos datos que se actualizaran en la request
         likes: request.body.likes
@@ -98,4 +99,4 @@ notesRouter.put('/:id', async (request, response, next) => {
     }
 })
 
-module.exports = notesRouter
+module.exports = blogsRouter

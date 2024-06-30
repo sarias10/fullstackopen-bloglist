@@ -4,7 +4,7 @@ const config = require('./utils/config')
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const notesRouter = require('./controllers/blogs')
+const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
 const middleware = require('./utils/middleware')
@@ -27,7 +27,7 @@ app.use(cors())
 app.use(express.json())
 //todas las solicitudes a la direccion /api/login las maneja loginRouter
 app.use('/api/login',loginRouter)
-app.use('/api/blogs',notesRouter)
+app.use('/api/blogs',blogsRouter)
 //cuando se haga una solicitud HTTP a la direccion .../api/users, se ejecutara usersRouter
 app.use('/api/users', usersRouter)
 //handler of requests with result to errors
