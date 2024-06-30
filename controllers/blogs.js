@@ -7,25 +7,13 @@ const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
-const getTokenFrom = request => {
-    //obtiene el encabezado authorization de la solicitud
-    const authorization = request.get('authorization')
-    //si autorizacion existe y empieza con 'Bearer '
-    //entonces reemplaza 'Bearer ' con nada y devuelve lo demas
-    if (authorization && authorization.startsWith('Bearer ')) {
-        return authorization.replace('Bearer ', '')
-    }
-    //sino cumple el condicional anterior entonces devuelve null
-    return null
-}
-
 blogsRouter.get('/testGetTokenFrom', async (request, response) => {
-    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
     if(!decodedToken.id) {
         return response.status(401).json({ error: 'token invalid' })
     }
     const user = await User.findById(decodedToken.id)
-    console.log(user)
+    console.log('usuario encontrado', user)
 })
 
 blogsRouter.get('/', async (request,response) => {
@@ -38,7 +26,7 @@ blogsRouter.post('/', async (request,response, next) => {
 
     try{
         //decodifica el token y devuelve en decodedToken el objeto con atributos username y id
-        const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+        const decodedToken = jwt.verify(request.token, process.env.SECRET)
         //sino existe el id en el token devuelve error
         if(!decodedToken.id) {
             return response.status(401).json({ error: 'token invalid' })

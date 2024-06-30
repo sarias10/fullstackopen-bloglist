@@ -14,8 +14,23 @@ const errorHandler = (error, request, response, next) => {
     next(error)
 }
 
+const getTokenFrom = request => {
+    //obtiene el encabezado authorization de la solicitud
+    const authorization = request.get('authorization')
+    //si autorizacion existe y empieza con 'Bearer '
+    //entonces reemplaza 'Bearer ' con nada y devuelve lo demas
+    if (authorization && authorization.startsWith('Bearer ')) {
+        return authorization.replace('Bearer ', '')
+    }
+    //sino cumple el condicional anterior entonces devuelve null
+    return null
+}
+
 const tokenExtractor = (request, response, next) => {
     //codigo que extra el token
+    request.token = getTokenFrom(request)
+
+    next()
 }
 
 module.exports = {

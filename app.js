@@ -25,6 +25,7 @@ mongoose.connect(mongoUrl)
 
 app.use(cors())
 app.use(express.json())
+app.use(middleware.tokenExtractor)
 //todas las solicitudes a la direccion /api/login las maneja loginRouter
 app.use('/api/login',loginRouter)
 app.use('/api/blogs',blogsRouter)
