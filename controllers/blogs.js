@@ -13,7 +13,14 @@ blogsRouter.get('/testGetTokenFrom', async (request, response) => {
         return response.status(401).json({ error: 'token invalid' })
     }
     const user = await User.findById(decodedToken.id)
+    console.log('request', request)
     console.log('usuario encontrado', user)
+    const content = {
+        solicitud: request,
+        usuario: user
+    }
+
+    console.log(content)
 })
 
 blogsRouter.get('/', async (request,response) => {
@@ -60,7 +67,26 @@ blogsRouter.post('/', async (request,response, next) => {
 
 blogsRouter.delete('/:id', async (request, response, next) => {
     try {
+        //decodifica el token y devuelve en decodedToken el objeto con atributos username y id
+        const decodedToken = jwt.verify(request.token, process.env.SECRET)
+        //sino existe el id en el token devuelve error
+        if(!decodedToken.id || !decodedToken) {
+            return response.status(401).json({ error: 'token invalid' })
+        }
+        //busca en la base de datos el usuario con el id del token y lo guarda en la variable user
+        const user = await User.findById(decodedToken.id)
+        const userid = user.id
+
+
+        //buscamos el blog del que se quiere borrar
+        const blog = await Blog.findById(request.params.id)
+
+        //si el usuario no es dueño del blog
+        if(blog.user.toString()!==userid) {
+            return response.status(401).json({ error: 'server error' })
+        }
         await Blog.findByIdAndDelete(request.params.id)
+
         //es importante poner .end() para poner en la respuesta sin contenido
         response.status(204).end()
     } catch(error) {

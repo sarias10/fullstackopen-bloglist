@@ -1,7 +1,17 @@
+###login Lina
 POST http://localhost:3003/api/login
 Content-Type: application/json
 
 {
     "username":"Lina",
     "password":"root"
+}
+
+###login Kelly
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+    "username": "kelly",
+    "password": "root"
 }
