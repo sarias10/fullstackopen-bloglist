@@ -1,11 +1,11 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkxpbmEiLCJpZCI6IjY2NzFkMTljOWViNDhmNTNmOGNmNGU1MiIsImlhdCI6MTcxOTA3MzYxNH0.XOxrLn-xaHmSLUx6X8C9B5sOhCK4bte-M3tnQN9OCns
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikp1bGlvIiwiaWQiOiI2Njg0ZDAzM2U1ZTczNmQyY2NmNTYzZGMiLCJpYXQiOjE3Mjc4NzAzMjh9.G1RNzljDiO1T_-V-VhllApNfrl47lGCo9pLkBuAeASo
 
 {
-    "title": "autenticacion 18",
-    "author": "autenticacion 40",
-    "url": "autenticacion 40"
+    "title": "primer blog de Julio",
+    "author": "Julio",
+    "url": "julio.com"
 }
 
 ###

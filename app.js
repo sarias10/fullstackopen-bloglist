@@ -25,10 +25,13 @@ mongoose.connect(mongoUrl)
 
 app.use(cors())
 app.use(express.json())
+
+// Este middleware se ejecuta en todas las rutas para extraer el token
 app.use(middleware.tokenExtractor)
+
 //todas las solicitudes a la direccion /api/login las maneja loginRouter
 app.use('/api/login',loginRouter)
-app.use('/api/blogs',blogsRouter)
+app.use('/api/blogs',middleware.userExtractor, blogsRouter)
 //cuando se haga una solicitud HTTP a la direccion .../api/users, se ejecutara usersRouter
 app.use('/api/users', usersRouter)
 //handler of requests with result to errors

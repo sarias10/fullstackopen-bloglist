@@ -32,14 +32,8 @@ blogsRouter.post('/', async (request,response, next) => {
     const body = request.body
 
     try{
-        //decodifica el token y devuelve en decodedToken el objeto con atributos username y id
-        const decodedToken = jwt.verify(request.token, process.env.SECRET)
-        //sino existe el id en el token devuelve error
-        if(!decodedToken.id) {
-            return response.status(401).json({ error: 'token invalid' })
-        }
-        //busca en la base de datos el usuario con el id del token y lo guarda en la variable user
-        const user = await User.findById(decodedToken.id)
+        //como el user ya viene en la solicitud(por el middleware) lo guardamos en la variable user
+        const user = request.user
 
         //crea un blog nuevo usando el esquema Blog y asignando a user user el user._id
         const blog = new Blog ({
@@ -67,26 +61,23 @@ blogsRouter.post('/', async (request,response, next) => {
 
 blogsRouter.delete('/:id', async (request, response, next) => {
     try {
-        //decodifica el token y devuelve en decodedToken el objeto con atributos username y id
-        const decodedToken = jwt.verify(request.token, process.env.SECRET)
-        //sino existe el id en el token devuelve error
-        if(!decodedToken.id || !decodedToken) {
-            return response.status(401).json({ error: 'token invalid' })
-        }
-        //busca en la base de datos el usuario con el id del token y lo guarda en la variable user
-        const user = await User.findById(decodedToken.id)
-        const userid = user.id
-
-
+        //como el user ya viene en la solicitud(por el middleware) lo guardamos en la variable user
+        const user = request.user
         //buscamos el blog del que se quiere borrar
         const blog = await Blog.findById(request.params.id)
 
-        //si el usuario no es dueño del blog
-        if(blog.user.toString()!==userid) {
+        //si el usuario no es dueño del blog se responde con un mensaje de error
+        if(blog.user.toString()!==user.id) {
             return response.status(401).json({ error: 'server error' })
         }
+        // Busca y elimina el blog con el ID especificado en los parámetros de la solicitud
         await Blog.findByIdAndDelete(request.params.id)
-
+        // Busca un usuario por su ID y elimina el ID del blog especificado en los parámetros de la solicitud del array 'blogs' del usuario
+        const updateUser = await User.findOneAndUpdate(
+            { _id: user.id }, // Criterio de búsqueda: encuentra el usuario por su ID
+            { $pull: { blogs: request.params.id } } // Actualización: elimina el ID del blog del array 'blogs' del usuario
+        )
+        await updateUser.save()
         //es importante poner .end() para poner en la respuesta sin contenido
         response.status(204).end()
     } catch(error) {
