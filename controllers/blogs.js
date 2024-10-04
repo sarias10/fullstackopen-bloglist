@@ -3,29 +3,12 @@
 // El objeto enrutador es, de hecho, un middleware que se puede utilizar para definir "rutas relacionadas" en un solo lugar
 
 const blogsRouter = require('express').Router()
-const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
-blogsRouter.get('/testGetTokenFrom', async (request, response) => {
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if(!decodedToken.id) {
-        return response.status(401).json({ error: 'token invalid' })
-    }
-    const user = await User.findById(decodedToken.id)
-    console.log('request', request)
-    console.log('usuario encontrado', user)
-    const content = {
-        solicitud: request,
-        usuario: user
-    }
-
-    console.log(content)
-})
-
 blogsRouter.get('/', async (request,response) => {
     const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
-    response.json(blogs)
+    response.status(200).json(blogs)
 })
 
 blogsRouter.post('/', async (request,response, next) => {

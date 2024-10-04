@@ -10,34 +10,69 @@ const api = supertest(app)
 
 const helper = require('./blog_test_helper')
 
+//se importa el modelo Blog
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 
 
 describe('testing blog list api', () => {
+    let token
     beforeEach( async () => {
         await Blog.deleteMany({})
+        await User.deleteMany({})
+        // Crear usuario y obtener el token
+        const newUser = {
+            username: 'root',
+            name: 'Superuser',
+            password: 'root'
+        }
+        //se crea el usuario
+        await api
+            .post('/api/users')
+            .send(newUser)
+        //se inicia sesion con el usuario creado
+        const loginResponse = await api
+            .post('/api/login')
+            .send({
+                username: 'root',
+                password: 'root'
+            })
+        //se responde la solicitud con el token firmado
+        token = loginResponse.body.token
+        //se crean los objetos con la info del usuario loggeado
         for(let object of helper.initialBlogs){
-            let newObject = new Blog(object)
-            await newObject.save()
+            //Tenga en cuenta que debe llamar .set()DESPUÉS de llamar .post(), no antes.
+            //si lo haces al reves da error
+            await api
+                .post('/api/blogs')
+                .set('Authorization', `Bearer ${token}`)
+                .send(object)
         }
     })
 
+    //testea si encontro los blogs de una persona
     describe('testing get all blogs', () => {
         test('blogs are returned as json', async () => {
             await api
                 .get('/api/blogs')
+                .set('Authorization', `Bearer ${token}`)
                 .expect(200)
                 .expect('Content-type', /application\/json/)
         })
 
         test('blog list have 6 objects', async () => {
-            const response = await api.get('/api/blogs')
+            const response = await api
+                .get('/api/blogs')
+                .set('Authorization', `Bearer ${token}`)
+                .expect(200)
             assert.strictEqual(response.body.length, 6)
         })
 
         test('id\'s property is "id"', async () => {
-            const response = await api.get('/api/blogs')
+            const response = await api
+                .get('/api/blogs')
+                .set('Authorization', `Bearer ${token}`)
             const firstObjectAtributes = Object.keys(response.body[0])
             assert(firstObjectAtributes.includes('id'))
         })
@@ -53,6 +88,7 @@ describe('testing blog list api', () => {
             }
             await api
                 .post('/api/blogs')
+                .set('Authorization', `Bearer ${token}`)
                 .send(newBlog)
                 .expect(201)
                 .expect('Content-type', /application\/json/)
@@ -74,6 +110,7 @@ describe('testing blog list api', () => {
             }
             const post = await api
                 .post('/api/blogs')
+                .set('Authorization', `Bearer ${token}`)
                 .send(newBlog)
                 .expect(201)
                 .expect('Content-type', /application\/json/)
@@ -90,6 +127,7 @@ describe('testing blog list api', () => {
             }
             await api
                 .post('/api/blogs')
+                .set('Authorization', `Bearer ${token}`)
                 .send(newBlog)
                 .expect(400)
         })
@@ -102,8 +140,23 @@ describe('testing blog list api', () => {
             }
             await api
                 .post('/api/blogs')
+                .set('Authorization', `Bearer ${token}`)
                 .send(newBlog)
                 .expect(400)
+        })
+
+        test('Testing when no token is provided', async () => {
+            const newBlog = {
+                title: 'learning to test api',
+                author: 'Sergio Arias',
+                url: 'sergio-arias.com',
+                likes: 50000,
+            }
+
+            await api
+                .post('/api/blogs')
+                .send(newBlog)
+                .expect(401)
         })
     })
 
@@ -115,6 +168,7 @@ describe('testing blog list api', () => {
             //delete the blog
             await api
                 .delete(`/api/blogs/${oneBlog.id}`)
+                .set('Authorization', `Bearer ${token}`)
                 .expect(204)
 
             const blogAtEnd = await helper.blogsInDb()
@@ -134,6 +188,7 @@ describe('testing blog list api', () => {
             }
             await api
                 .put(`/api/blogs/${invalidId}`)
+                .set('Authorization', `Bearer ${token}`)
                 .send(updatedBlog)
                 .expect(400)
         })
@@ -150,6 +205,7 @@ describe('testing blog list api', () => {
             }
             await api
                 .put(`/api/blogs/${id}`)
+                .set('Authorization', `Bearer ${token}`)
                 .send(updateBlog)
                 .expect(200)
             const blogsAtEnd = await helper.blogsInDb()

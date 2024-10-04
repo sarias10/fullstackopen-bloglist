@@ -4,7 +4,6 @@ Content-Type: application/json
 
 {
     "username": "Julio",
-    "name": "Julio",
     "password": "root"
 }
 ###login Lina

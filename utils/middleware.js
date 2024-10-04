@@ -15,27 +15,23 @@ const errorHandler = (error, request, response, next) => {
     next(error)
 }
 
-const getTokenFrom = request => {
+const tokenExtractor = (request, response, next) => {
     //obtiene el encabezado authorization de la solicitud
     const authorization = request.get('authorization')
-    //si autorizacion existe y empieza con 'Bearer '
-    //entonces reemplaza 'Bearer ' con nada y devuelve lo demas
-    if (authorization && authorization.startsWith('Bearer ')) {
-        return authorization.replace('Bearer ', '')
-    }
-    //sino cumple el condicional anterior entonces devuelve null
-    return null
-}
-
-const tokenExtractor = (request, response, next) => {
     //codigo que extrae el token
-    request.token = getTokenFrom(request)
-
+    if (authorization && authorization.startsWith('Bearer ')) {
+        request.token = authorization.replace('Bearer ', '')
+    }
+    else{
+        request.token = null
+    }
     next()
 }
 
 const userExtractor = async (request, response, next) => {
-
+    if(!request.token){
+        return response.status(401).json({ error: 'no hay token' })
+    }
     //decodifica el token y devuelve en decodedToken el objeto con atributos username y id
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
     //sino existe el id en el token devuelve error
