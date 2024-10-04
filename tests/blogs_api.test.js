@@ -23,9 +23,9 @@ describe('testing blog list api', () => {
         await User.deleteMany({})
         // Crear usuario y obtener el token
         const newUser = {
-            username: 'root',
+            username: 'root1',
             name: 'Superuser',
-            password: 'root'
+            password: 'root1'
         }
         //se crea el usuario
         await api
@@ -35,8 +35,8 @@ describe('testing blog list api', () => {
         const loginResponse = await api
             .post('/api/login')
             .send({
-                username: 'root',
-                password: 'root'
+                username: 'root1',
+                password: 'root1'
             })
         //se responde la solicitud con el token firmado
         token = loginResponse.body.token

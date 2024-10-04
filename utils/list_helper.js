@@ -57,8 +57,8 @@ const dummy = (blogs) => {
 }
 
 const totalLikes = (blogs) => {
-    /*La función devuelve la suma total de 
-      me gusta en todas las publicaciones 
+    /*La función devuelve la suma total de
+      me gusta en todas las publicaciones
       del blog
       */
     const initialValue = 0
@@ -75,9 +75,9 @@ const totalLikes = (blogs) => {
 
 const favoriteBlog = (blogs) => {
 
-    /*La función recibe una lista de blogs como parámetro. 
-    La función descubre qué blog tiene más 
-    Me gusta. Si hay muchos favoritos, basta con 
+    /*La función recibe una lista de blogs como parámetro.
+    La función descubre qué blog tiene más
+    Me gusta. Si hay muchos favoritos, basta con
     devolver uno de ellos.
     */
 

@@ -13,7 +13,6 @@ blogsRouter.get('/', async (request,response) => {
 
 blogsRouter.post('/', async (request,response, next) => {
     const body = request.body
-
     try{
         //como el user ya viene en la solicitud(por el middleware) lo guardamos en la variable user
         const user = request.user

@@ -1,11 +1,11 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikp1bGlvIiwiaWQiOiI2Njg0ZDAzM2U1ZTczNmQyY2NmNTYzZGMiLCJpYXQiOjE3Mjc5MjEyMjl9.LD1O5qSEP9NPi4ZBs5iluN5p_3sgktd_F17aLYx6mdY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikp1bGlvIiwiaWQiOiI2Njg0ZDAzM2U1ZTczNmQyY2NmNTYzZGMiLCJpYXQiOjE3MjgwNDExMDd9.mrme8P9A_RqB3ADbzFw7kyLhq2Cw0nKGCjciw1imLdo
 
 {
-    "title": "primer blog de Julio",
-    "author": "Julio",
-    "url": "julio.com"
+    "title": "otro blog",
+    "author": "otro",
+    "url": "otro.com"
 }
 
 ###
