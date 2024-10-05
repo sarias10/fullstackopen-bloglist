@@ -1,22 +1,23 @@
+### Blog de julio
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikp1bGlvIiwiaWQiOiI2Njg0ZDAzM2U1ZTczNmQyY2NmNTYzZGMiLCJpYXQiOjE3MjgwNDExMDd9.mrme8P9A_RqB3ADbzFw7kyLhq2Cw0nKGCjciw1imLdo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikp1bGlvIiwiaWQiOiI2Njg0ZDAzM2U1ZTczNmQyY2NmNTYzZGMiLCJpYXQiOjE3MjgxNTc4MzJ9.WlszOSo_majXlAReVt8NYnLJ92D9Tq2Dmk2BAtJCt18
 
 {
-    "title": "otro blog",
-    "author": "otro",
+    "title": "blog de sergio",
+    "author": "otro blog de sergio",
     "url": "otro.com"
 }
 
-###
+### Blog de kelly
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtlbGx5IiwiaWQiOiI2NmZlODJhYzRmNmM2YWQzZjhjZjhjYTIiLCJpYXQiOjE3Mjc5NTU2NDN9.Vg7VqC1HioYNWCCrwyRuo8lse-1CnShORn_vQnnGCUI
 
 {
-    "title": "test2",
-    "author": "test",
-    "url": "test",
+    "title": "test4",
+    "author": "test4",
+    "url": "test4",
     "likes": 200
 }
 ###

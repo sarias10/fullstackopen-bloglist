@@ -30,17 +30,6 @@ Content-Type: application/json
     "password": "root"
 }
 
-### Create user Lina
-
-POST http://localhost:3003/api/users
-Content-Type: application/json
-
-{
-    "username": "Lina",
-    "name": "Lina",
-    "password": "root"
-}
-
 ### user not valid
 
 POST http://localhost:3003/api/users
