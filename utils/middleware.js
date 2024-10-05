@@ -30,17 +30,16 @@ const tokenExtractor = (request, response, next) => {
 
 const userExtractor = async (request, response, next) => {
     if(!request.token){
-        return response.status(401).json({ error: 'no hay token' })
+        return response.status(401).json({ error: 'no token provided' })
     }
     //decodifica el token y devuelve en decodedToken el objeto con atributos username y id
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    //sino existe el id en el token devuelve error
+    //sino existe el id del usuario en el token devuelve error
     if(!decodedToken || !decodedToken.id) {
         return response.status(401).json({ error: 'token invalid' })
     }
-    //busca en la base de datos el usuario con el id del token y lo guarda en la variable user
-    const user = await User.findById(decodedToken.id)
-
+    //busca en la base de datos el usuario con el id del token y lo guarda en la variable user que tiene username y id del usuario
+    const user = decodedToken
     //configura request.user en el objeto de la solicitud
     request.user = user
     next()

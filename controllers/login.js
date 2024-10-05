@@ -3,7 +3,7 @@ const brcrypt = require('bcrypt')
 const loginRouter = require('express').Router()
 const User = require('../models/user')
 
-loginRouter.post('/', async (request, response, next) => {
+loginRouter.post('/', async (request, response) => {
     //este es el cuerpo con los datos de la solicitud que se manda
     const body = request.body
 

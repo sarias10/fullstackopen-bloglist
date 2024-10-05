@@ -6,17 +6,24 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
-blogsRouter.get('/', async (request,response) => {
-    const blogs = await Blog.find({ user: request.user._id.toString() }).populate('user', { username: 1, name: 1 })
-    response.status(200).json(blogs)
+blogsRouter.get('/', async (request,response, next) => {
+    try {
+        const user = request.user
+        const blogs = await Blog.find({ user: user.id }).populate('user', { username: 1, name: 1 })
+        console.log(typeof blogs[0].user.toString())
+        response.status(200).json(blogs)
+    } catch(error) {
+        next(error)
+    }
 })
 
 blogsRouter.post('/', async (request,response, next) => {
     const body = request.body
     try{
-        //como el user ya viene en la solicitud(por el middleware) lo guardamos en la variable user
-        const user = request.user
+        //esto tiene el token decodificado
+        const decodedToken = request.user
 
+        const user = await User.findById(decodedToken.id)
         //crea un blog nuevo usando el esquema Blog y asignando a user user el user._id
         const blog = new Blog ({
             title: body.title,
@@ -45,7 +52,7 @@ blogsRouter.delete('/:id', async (request, response, next) => {
     try {
         //como el user ya viene en la solicitud(por el middleware) lo guardamos en la variable user
         const user = request.user
-        //buscamos el blog del que se quiere borrar
+        //buscamos el blog que se quiere borrar
         const blog = await Blog.findById(request.params.id)
 
         //si el usuario no es dueño del blog se responde con un mensaje de error
@@ -73,13 +80,20 @@ blogsRouter.put('/:id', async (request, response, next) => {
         likes: request.body.likes
     }
     try {
+        const user = request.user
+        //buscamos el blog que se quiere actualizar
+        const blogFound = await Blog.findById(request.params.id)
+        if(blogFound.user.toString() !==user.id){
+            return response.status(401).json({ error: 'server error' })
+        }
         const updatedBlog = await Blog
             //se le pasa el nuevo blog como argumento
             .findByIdAndUpdate(request.params.id, blog,
-                { new: true,
-                    //para que vuelva a validar los datos ingresados
-                    runValidators: true,
-                    context: 'query' })
+                {
+                    new: true,// Devuelve el documento actualizado en lugar del original
+                    runValidators: true, //parametro para que vuelva a validar los datos ingresados con lo del modelo
+                    context: 'query' // contexto de validación
+                })
         response.status(200).json(updatedBlog)
     } catch(error) {
         next(error)
