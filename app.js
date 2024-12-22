@@ -34,6 +34,11 @@ app.use('/api/login',loginRouter)
 app.use('/api/blogs',middleware.userExtractor, blogsRouter)
 //cuando se haga una solicitud HTTP a la direccion .../api/users, se ejecutara usersRouter
 app.use('/api/users', usersRouter)
+
+if(process.env.NODE_ENV === 'test') {
+    const testingRouter = require('./controllers/testing')
+    app.use('/api/testing', testingRouter)
+}
 //handler of requests with result to errors
 app.use(middleware.errorHandler)
 
