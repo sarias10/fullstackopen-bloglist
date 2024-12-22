@@ -1,6 +1,6 @@
 ### Obtiene los blogs de julio
 GET http://localhost:3003/api/blogs
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikp1bGlvIiwiaWQiOiI2Njg0ZDAzM2U1ZTczNmQyY2NmNTYzZGMiLCJpYXQiOjE3Mjc5MjEyMjl9.LD1O5qSEP9NPi4ZBs5iluN5p_3sgktd_F17aLYx6mdY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikp1bGlvIiwiaWQiOiI2NzY3ZjZkNGRiNGQwNmUzYjE2OTc5ZTQiLCJpYXQiOjE3MzQ4NjY3MzV9.tfRjeKXwsoGsOnSLv9Qvi7tHallY97z5cYvei9upWDE
 
 ### Obtiene los blogs de kelly
 GET http://localhost:3003/api/blogs

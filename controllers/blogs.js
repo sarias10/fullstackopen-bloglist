@@ -87,7 +87,7 @@ blogsRouter.put('/:id', async (request, response, next) => {
             return response.status(401).json({ error: 'server error' })
         }
         const updatedBlog = await Blog
-            //se le pasa el nuevo blog como argumento
+            //se le pasa el nuevo blog como argumento y solo actualiza el campo que se le paso
             .findByIdAndUpdate(request.params.id, blog,
                 {
                     new: true,// Devuelve el documento actualizado en lugar del original
