@@ -33,7 +33,6 @@ const App = () => {
     const fetchBlogs = async () => {
       try{
         if(user){
-          console.log('user', user)
           const response = await blogService.getAll()
           const orderedList = compareFn(response)
           setBlogs(orderedList)

@@ -15,7 +15,6 @@ const getAll = async () => {
   const config = {
     headers: { Authorization: token }
   }
-  console.log('se empieza a ejecutar la petición')
   const response = await axios.get(baseUrl, config)
   return response.data
 }
