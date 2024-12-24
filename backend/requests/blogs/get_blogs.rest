@@ -1,0 +1,7 @@
+### Obtiene los blogs de julio
+GET http://localhost:3003/api/blogs
+Authorization: Bearer 
+
+### Obtiene los blogs de kelly
+GET http://localhost:3003/api/blogs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtlbGx5IiwiaWQiOiI2NzZhYTA5N2Y1MThmOWQzNTYxOGZjMjYiLCJpYXQiOjE3MzUwNDExODZ9.rM-TTocZ9_ExXa0Vik93q3-l6jWokmIMlyQC3KuY1-0

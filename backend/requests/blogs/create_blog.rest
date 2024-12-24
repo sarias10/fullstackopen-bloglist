@@ -1,7 +1,7 @@
 ### Blog de julio
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikp1bGlvIiwiaWQiOiI2NzYyYWM2YjI1ZTY5MTU0NjEyZjNmMTciLCJpYXQiOjE3MzQ1MTk5MTZ9.LnwbH8CjRRcctMjFpGtl7SAKuOsvzmfXO2mXoHvWbbA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikp1bGlvIiwiaWQiOiI2NzZhOWY3OTkxM2RhOTNiYzg5OGFkMTYiLCJpYXQiOjE3MzUwNDA5MDF9.uAuhPVHOGDVwcuGLApJnunOrz4FiXHAiLSAq2OZtvIU
 
 {
     "title": "blog de Kelly",

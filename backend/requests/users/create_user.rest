@@ -19,7 +19,7 @@ Content-Type: application/json
     "password": "root"
 }
 
-### Create user Sergio
+### Create user sergio
 
 POST http://localhost:3003/api/users
 Content-Type: application/json
