@@ -10,7 +10,6 @@ blogsRouter.get('/', async (request,response, next) => {
     try {
         const user = request.user
         const blogs = await Blog.find({ user: user.id }).populate('user', { username: 1, name: 1 })
-        console.log(typeof blogs[0].user.toString())
         response.status(200).json(blogs)
     } catch(error) {
         next(error)

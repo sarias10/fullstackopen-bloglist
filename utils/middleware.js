@@ -1,6 +1,5 @@
 // para consultar los nombres de los errores hay que usar "error.name" no dice la propiedad explicitamente en el objeto porque es una propiedad no enumerable
 const jwt = require('jsonwebtoken')
-const User = require('../models/user')
 
 const errorHandler = (error, request, response, next) => {
     if(error.name==='CastError') {
