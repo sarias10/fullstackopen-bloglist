@@ -1,18 +1,12 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
-const { loginWith, createBlog, handleView } = require('./helper')
+const { loginWith, createBlog, handleView, createUser, logoutWith } = require('./helper')
 
 describe('Blog app', () => {
     beforeEach(async ({ page, request }) => {
         // resetea blogs y usuarios
         await request.post('/api/testing/reset')
         // agrega un nuevo usuario
-        await request.post('/api/users', {
-          data: {
-            username: "julio",
-            name: "Julio",
-            password: "root"
-          }
-        })
+        await createUser(request, 'julio', 'Julio', 'root')
 
       await page.goto('/')
     })
@@ -50,14 +44,14 @@ describe('Blog app', () => {
 
         test('blog can be liked', async ({ page }) => {
           await createBlog(page, 'blog de prueba', 'Julio', 'julio.com')
-          await handleView(page)
+          await handleView(page,'blog de prueba - Julio')
           await page.getByRole('button', {name: 'like'}).click()
           await expect(page.getByText('1')).toBeVisible()
         })
 
         test('blog can be deleted', async ({ page }) => {
           await createBlog(page, 'blog de prueba', 'Julio', 'julio.com')
-          await handleView(page)
+          await handleView(page,'blog de prueba - Julio')
 
           // Configurar el manejador de diálogos antes de hacer clic en el botón
           // asi se tiene que hacer
@@ -68,6 +62,20 @@ describe('Blog app', () => {
           await page.getByRole('button', {name: 'remove'}).click()
 
           await expect(page.getByText('blog de prueba - Julio')).not.toBeVisible()
+        })
+
+        describe('Another user create a blog', () => {
+          beforeEach(async ({ page, request }) => {
+            await createUser(request, 'kelly', 'kelly', 'root')
+            await createBlog(page, 'blog de prueba', 'Julio', 'julio.com')
+            await logoutWith(page)
+            await loginWith(page,'kelly','root')
+          })
+
+          test('an user cannot remove blogs created by other user', async ({ page }) => {
+            await handleView(page, 'blog de prueba - Julio')
+            await expect(page.getByText('remove')).not.toBeVisible()
+          })
         })
       })
   })
