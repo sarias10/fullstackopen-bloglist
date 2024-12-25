@@ -53,7 +53,21 @@ describe('Blog app', () => {
           await handleView(page)
           await page.getByRole('button', {name: 'like'}).click()
           await expect(page.getByText('1')).toBeVisible()
-          
+        })
+
+        test('blog can be deleted', async ({ page }) => {
+          await createBlog(page, 'blog de prueba', 'Julio', 'julio.com')
+          await handleView(page)
+
+          // Configurar el manejador de diálogos antes de hacer clic en el botón
+          // asi se tiene que hacer
+          page.on('dialog', async dialog => {
+            await dialog.accept()
+          })
+
+          await page.getByRole('button', {name: 'remove'}).click()
+
+          await expect(page.getByText('blog de prueba - Julio')).not.toBeVisible()
         })
       })
   })
