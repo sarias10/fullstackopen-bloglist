@@ -3,7 +3,7 @@ import blogService from '../services/blogs'
 import blogs from '../services/blogs'
 import { compareFn } from '../utils'
 
-const Blog = ({ blog, name, blogs, setBlogs, handleLike }) => {
+const Blog = ({ blog, username, blogs, setBlogs, handleLike }) => {
   const [showDetails, setShowDetails] =useState(false)
   const blogStyle = {
     paddingTop: 10,
@@ -30,21 +30,20 @@ const Blog = ({ blog, name, blogs, setBlogs, handleLike }) => {
       setBlogs(allBlogs)
     }
   }
-
   return(
     <div style={blogStyle}>
       {blog.title} - {blog.author} <button className='viewButton' onClick={controlShowDetails}>view</button>
       {showDetails &&
       <div>
-        <span>{blog.id}</span>
-        <br/>
         <span>{blog.url}</span>
         <br/>
         <span>likes {blog.likes}</span> <button className='likeButton' onClick={handleLike}>like</button>
         <br/>
-        <span>{name}</span>
+        <span>{blog.user.name}</span>
         <br/>
+        {blog.user.username === username &&
         <button style={removeButtonStyle} onClick={handleDelete}>remove</button>
+        }
       </div>
       }
     </div>

@@ -8,8 +8,9 @@ const User = require('../models/user')
 
 blogsRouter.get('/', async (request,response, next) => {
     try {
-        const user = request.user
-        const blogs = await Blog.find({ user: user.id }).populate('user', { username: 1, name: 1 })
+        //const user = request.user
+        //const blogs = await Blog.find({ user: user.id }).populate('user', { username: 1, name: 1 })
+        const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
         response.status(200).json(blogs)
     } catch(error) {
         next(error)
@@ -39,9 +40,12 @@ blogsRouter.post('/', async (request,response, next) => {
         //guarda en la base de datos la actualización
         await user.save()
 
+        //poblar el campo user del blog guardado
+        const populatedBlog = await savedBlog.populate('user', { username: 1, name: 1 })
+
         //un código 201 significa que una solicitud se procesó correctamente y devolvió,o creó, un recurso o resources en el proceso
-        //responde con el blog guardado
-        response.status(201).json(savedBlog)
+        //responde con el blog guardado y poblado
+        response.status(201).json(populatedBlog)
     }catch(error){
         next(error)
     }
@@ -79,12 +83,12 @@ blogsRouter.put('/:id', async (request, response, next) => {
         likes: request.body.likes
     }
     try {
-        const user = request.user
+        //const user = request.user
         //buscamos el blog que se quiere actualizar
-        const blogFound = await Blog.findById(request.params.id)
-        if(blogFound.user.toString() !==user.id){
-            return response.status(401).json({ error: 'server error' })
-        }
+        //const blogFound = await Blog.findById(request.params.id)
+        //if(blogFound.user.toString() !==user.id){
+        //    return response.status(401).json({ error: 'server error' })
+        //}
         const updatedBlog = await Blog
             //se le pasa el nuevo blog como argumento y solo actualiza el campo que se le paso
             .findByIdAndUpdate(request.params.id, blog,

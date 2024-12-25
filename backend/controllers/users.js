@@ -11,6 +11,12 @@ usersRouter.post('/', async (request, response, next) => {
     const { username, name, password } = request.body
 
     try {
+        //Verificar si el nombre de usuario ya existe
+        const existingUser = await User.findOne({ username })
+        if(existingUser){
+            // para el codigo y devuelve esto
+            return response.status(400).json({ error: 'username must be unique' })
+        }
         if(password){
             if (password.length >= 3){
                 const saltRounds = 10
