@@ -31,7 +31,7 @@ const Blog = ({ blog, username, blogs, setBlogs, handleLike }) => {
     }
   }
   return(
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       {blog.title} - {blog.author} <button className='viewButton' onClick={controlShowDetails}>view</button>
       {showDetails &&
       <div>

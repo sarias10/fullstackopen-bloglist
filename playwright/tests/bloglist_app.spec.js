@@ -1,5 +1,5 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
-const { loginWith, createBlog, handleView, createUser, logoutWith } = require('./helper')
+const { loginWith, createBlog, handleView, createUser, logoutWith, handleLike } = require('./helper')
 
 describe('Blog app', () => {
     beforeEach(async ({ page, request }) => {
@@ -45,7 +45,8 @@ describe('Blog app', () => {
         test('blog can be liked', async ({ page }) => {
           await createBlog(page, 'blog de prueba', 'Julio', 'julio.com')
           await handleView(page,'blog de prueba - Julio')
-          await page.getByRole('button', {name: 'like'}).click()
+          await handleLike(page,'blog de prueba - Julio','likes 1')
+          //await page.getByRole('button', {name: 'like'}).click()
           await expect(page.getByText('1')).toBeVisible()
         })
 
@@ -76,6 +77,38 @@ describe('Blog app', () => {
             await handleView(page, 'blog de prueba - Julio')
             await expect(page.getByText('remove')).not.toBeVisible()
           })
+        })
+
+        test('blogs are sorted by likes in descending order', async ({ page }) => {
+          await createBlog(page, 'blog de prueba1', 'autor 1', 'autor1.com')
+          await createBlog(page, 'blog de prueba2', 'autor 2', 'autor2.com')
+          await handleView(page, 'blog de prueba1 - autor 1')
+          // Hacer clic en el botón 'like' 5 veces
+          for (let i = 0; i < 2; i++) {
+            await handleLike(page, 'blog de prueba1 - autor 1',`likes ${i+1}`)
+          }
+          await createBlog(page, 'blog de prueba3', 'autor 3', 'autor3.com')
+          await createBlog(page, 'blog de prueba4', 'autor 4', 'autor4.com')
+          await handleView(page, 'blog de prueba3 - autor 3')
+          // Hacer clic en el botón 'like' 5 veces
+          for (let i = 0; i < 5; i++) {
+            await handleLike(page, 'blog de prueba3 - autor 3',`likes ${i+1}`)
+          }
+          await createBlog(page, 'blog de prueba5', 'autor 5', 'autor5.com')
+          await handleView(page, 'blog de prueba1 - autor 1')
+          await handleView(page, 'blog de prueba3 - autor 3')
+          // Obtener los títulos de los blogs en el orden en que aparecen en la página
+          const blogLocator = page.locator('.blog')
+          const blogTitles = await blogLocator.allTextContents()
+
+          // Verificar que los títulos están en el orden esperado
+          expect(blogTitles).toEqual([
+            'blog de prueba3 - autor 3 view',
+            'blog de prueba1 - autor 1 view',
+            'blog de prueba2 - autor 2 view',
+            'blog de prueba4 - autor 4 view',
+            'blog de prueba5 - autor 5 view'
+          ])
         })
       })
   })

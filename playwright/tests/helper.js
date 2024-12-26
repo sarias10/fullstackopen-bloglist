@@ -23,6 +23,13 @@ const handleView = async (page, text) => {
     await viewButton.click()
 }
 
+const handleLike = async (page, text, likesText) => {
+    const blogContainer = await page.getByText(text)
+    const likeButton = await blogContainer.locator('.likeButton')
+    await likeButton.click()
+    await blogContainer.locator(`text=${likesText}`).waitFor()
+}
+
 const createUser = async (request, username, name, password) => {
     await request.post('/api/users', {
         data: {
@@ -34,4 +41,4 @@ const createUser = async (request, username, name, password) => {
       console.log(`username ${username} created`);
 }
 
-export { loginWith, logoutWith, createBlog, handleView, createUser }
+export { loginWith, logoutWith, createBlog, handleView, handleLike, createUser }
