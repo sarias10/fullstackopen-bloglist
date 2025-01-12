@@ -38,9 +38,9 @@ const Register = ({ setMessage, setUser }) => {
       setName('')
       setPassword('')
     }
-    // console.log('registered')
-    // console.log(username)
-    // console.log(password)
+  }
+  const handleButtonLogin = () => {
+    navigate('/login')
   }
   return (
     <>
@@ -75,6 +75,9 @@ const Register = ({ setMessage, setUser }) => {
         </div>
         <button type="submit">register</button>
       </form>
+      <button onClick={handleButtonLogin}>
+        login
+      </button>
     </>
   )
 }
