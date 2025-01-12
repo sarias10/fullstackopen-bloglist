@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     "username": "julio",
-    "name": "Julio",
+    "name": "julio",
     "password": "root"
 }
 
@@ -27,6 +27,17 @@ Content-Type: application/json
 {
     "username": "sergio",
     "name": "sergio",
+    "password": "root"
+}
+
+### Create user deyanira
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "deyanira",
+    "name": "deyanira",
     "password": "root"
 }
 
