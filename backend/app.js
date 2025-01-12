@@ -24,6 +24,7 @@ mongoose.connect(mongoUrl)
     })
 
 app.use(cors())
+app.use(express.static('dist'))
 app.use(express.json())
 
 // Este middleware se ejecuta en todas las rutas para extraer el token
