@@ -9,9 +9,9 @@ const login = async (username, password) => {
   return response.data
 }
 
-// const main = async () =>{
-//     const response = await login('Julio', 'root')
-//     console.log('hola', response)
+// const main = async () => {
+//   const response = await login('deyanira', 'root')
+//   console.log('hola', response)
 // }
 // main()
 

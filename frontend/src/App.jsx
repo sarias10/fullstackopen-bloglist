@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -6,33 +7,27 @@ import Message from './components/Message'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import { compareFn } from './utils'
+import Login from './components/Login'
+import Register from './components/Register'
+import { useLocalStorage } from './utils/useLocalStorage'
 
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] =useState('')
-  const [user, setUser] = useState(null)
+  //const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
+  const [user, setUser] = useLocalStorage('user', null)
   //message
-  const [message, setMessage] = useState(
-    { message: 'Mensaje de prueba...',
-      error: false
-    })
+  const [message, setMessage] = useState(null)
   //refs
   const blogFormRef = useRef()//se utiliza para crear una referencia blogFormRef, que se asigna al componente togglable para poder usar las funciones definidas y (permitidas) dentro del componente padre
-
-  useEffect(() => {
-    const data = JSON.parse(window.localStorage.getItem('user'))
-    if(data){
-      setUser(data)
-      blogService.setToken(data.token) //establece otra vez el token
-    }
-  }, [])
 
   useEffect(() => {
     //si el user existe entonces se obtienen todos los blogs
     const fetchBlogs = async () => {
       try{
         if(user){
+          blogService.setToken(user.token) //establece otra vez el token
           const response = await blogService.getAll()
           const orderedList = compareFn(response)
           setBlogs(orderedList)
@@ -43,51 +38,6 @@ const App = () => {
     }
     fetchBlogs()
   }, [user])//actualiza el estado blogs cuando el user cambia
-
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    try{
-      const response = await loginService.login(username, password)
-      blogService.setToken(response.token)
-      setUser(response)
-      window.localStorage.setItem('user', JSON.stringify(response))
-      setMessage({ message: 'welcome', error: false })
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    }catch (error){
-      setMessage({ message: error.response.data.error, error: true })
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    }
-  }
-
-  const login = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          data-testid='username'
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          data-testid='password'
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
-  )
 
   const handleCreateNewBlog = async (newBlog) => {
     try{
@@ -142,32 +92,36 @@ const App = () => {
   }
 
   return (
-    <div>
-      <h2>blogs</h2>
-      {message &&
+    <BrowserRouter>
+      <div>
+        <h2>blogs</h2>
+        {message &&
       <Message message={message.message} error ={message.error}/>}
-      {user ?
-        <>
-          {userLogged()}
-          <button onClick={logOut}>
+        <Routes>
+          <Route path='/login' element={<Login username={username} password={password} setUser={setUser} setMessage={setMessage} setUsername={setUsername} setPassword={setPassword}/>} />
+          <Route path='/register' element={<Register setMessage={setMessage} setUser={setUser} />} />
+          <Route path='/' element= {user ? (
+            <>
+              {userLogged()}
+              <button onClick={logOut}>
             log out
-          </button>
-          <h2>create new</h2>
-          {showCreateBlogForm()}
-          <h2>blogs list created by {user.name}</h2>
-          {blogs &&
+              </button>
+              <h2>create new</h2>
+              {showCreateBlogForm()}
+              <h2>blogs list created by {user.name}</h2>
+              {blogs &&
           (blogs.map(blog =>
             <Blog key={blog.id} blog={blog} username = {user.username} blogs={blogs} setBlogs={setBlogs} handleLike={() => handleLike(blog)}/>
-          ))
-          }
-        </>
-        :
-        <>
-          <h2>log in to application</h2>
-          {login()}
-        </>
-      }
-    </div>
+          ))}
+            </>
+          )
+            : (
+              <Navigate to="/login" />
+            )} />
+        </Routes>
+
+      </div>
+    </BrowserRouter>
   )
 }
 
