@@ -1,23 +1,22 @@
-# Blog List Backend
+# Blog List - Full Stack Project
 
-Este es el backend para la aplicación **Blog List**, desarrollado con Node.js y Express. Maneja la lógica de autenticación, almacenamiento de blogs y usuarios en una base de datos.
+Este es un proyecto **fullstack** desarrollado como parte del curso **Full Stack Open** de la **Universidad de Helsinki**. Incluye un **frontend** en React y un **backend** en Node.js con Express y MongoDB.
 
 ## 🚀 Demo en línea
 
-Puedes probar el backend en funcionamiento en el siguiente enlace:
-
-🔗 [Blog List Backend en Render](https://fullstackopen-bloglist-backend.onrender.com)
+🔗 **URL del proyecto:** [Blog List en Render](https://fullstackopen-bloglist-backend.onrender.com)  
 
 ## 📖 Descripción
 
-Este backend proporciona una API REST para manejar blogs, incluyendo funcionalidades como:
-- Creación, actualización y eliminación de blogs
-- Autenticación de usuarios con tokens JWT
-- Manejo de usuarios y asociaciones con blogs
+El proyecto **Blog List** permite a los usuarios:
 
-## ⚡ Tecnologías utilizadas
+✔ **Registrar una cuenta** y autenticarse con JWT  
+✔ **Crear, leer, actualizar y eliminar blogs**  
+✔ **Administrar usuarios y sus blogs favoritos**  
 
-- Node.js
-- Express
-- MongoDB con Mongoose
-- JSON Web Token (JWT)
+### 🔹 Tecnologías utilizadas:
+
+- **Frontend:** React, Vite
+- **Backend:** Node.js, Express, MongoDB con Mongoose, JSON Web Token (JWT)  
+
+Este proyecto forma parte del curso [Full Stack Open](https://fullstackopen.com/en/) de la Universidad de Helsinki, que enseña desarrollo web moderno.
