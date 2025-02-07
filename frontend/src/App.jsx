@@ -108,7 +108,7 @@ const App = () => {
               </button>
               <h2>create new</h2>
               {showCreateBlogForm()}
-              <h2>blogs list created by {user.name}</h2>
+              <h2>Blogs created by users</h2>
               {blogs &&
           (blogs.map(blog =>
             <Blog key={blog.id} blog={blog} username = {user.username} blogs={blogs} setBlogs={setBlogs} handleLike={() => handleLike(blog)}/>
