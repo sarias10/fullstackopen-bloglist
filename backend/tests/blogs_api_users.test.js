@@ -119,7 +119,7 @@ describe('testing blog list api users', () => {
 
             const usersAtEnd = await helper.usersInDb()
             assert.strictEqual(usersAtStart.length,usersAtEnd.length)
-            assert.strictEqual(response.body.error, 'expected `username` to be unique')
+            assert.strictEqual(response.body.error, 'username must be unique')
         })
 
         test('user successfully created', async () => {

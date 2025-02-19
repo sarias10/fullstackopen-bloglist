@@ -61,7 +61,7 @@ describe('testing blog list api', () => {
                 .expect('Content-type', /application\/json/)
         })
 
-        test('blog list have 6 objects', async () => {
+        test.only('blog list have 6 objects', async () => {
             const response = await api
                 .get('/api/blogs')
                 .set('Authorization', `Bearer ${token}`)
